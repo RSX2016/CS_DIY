@@ -1,0 +1,5 @@
+﻿  VM2Hack.cpp
+D:\MyWorkspace\CS_DIY\CS_DIY\Architecture\Coursera_Nand2Tetris\MyToolsProject\VM2Hack\VM2Hack\Command.h(17): warning C4091: “static ”: 没有声明变量时忽略“Command::CType”的左侧
+D:\MyWorkspace\CS_DIY\CS_DIY\Architecture\Coursera_Nand2Tetris\MyToolsProject\VM2Hack\VM2Hack\VM2Hack.cpp(28,60): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\MyWorkspace\CS_DIY\CS_DIY\Architecture\Coursera_Nand2Tetris\MyToolsProject\VM2Hack\VM2Hack\VM2Hack.cpp(56,40): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  VM2Hack.vcxproj -> D:\MyWorkspace\CS_DIY\CS_DIY\Architecture\Coursera_Nand2Tetris\MyToolsProject\VM2Hack\VM2Hack\x64\Debug\VM2Hack.exe

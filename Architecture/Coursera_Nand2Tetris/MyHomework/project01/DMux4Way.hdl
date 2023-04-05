@@ -1,0 +1,19 @@
+// by Rsx
+
+/*
+    DMux4Way gate:
+    If   (sel = 00) { a = in; other = 0;}
+    elif (sel = 01) { b = in; other = 0;}
+    elif (sel = 10) { c = in; other = 0;}
+    elif (sel = 11) { d = in; other = 0;}
+
+*/
+
+CHIP DMux4Way {
+    IN in, sel[2];
+    OUT a, b, c, d;
+    PARTS:
+    DMux(in = in, sel = sel[0], a = tmp1, b = tmp2);
+    DMux(in = tmp1, sel = sel[1], a = a, b = c);
+    DMux(in = tmp2, sel = sel[1], a = b, b = d);
+}

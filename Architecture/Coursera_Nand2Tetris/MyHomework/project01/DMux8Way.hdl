@@ -1,0 +1,28 @@
+// by Rsx
+
+/*
+    DMux8Way gate:
+    If   (sel = 000) { a = in; other = 0;}
+    elif (sel = 001) { b = in; other = 0;}
+    elif (sel = 010) { c = in; other = 0;}
+    elif (sel = 011) { d = in; other = 0;}
+    elif (sel = 100) { e = in; other = 0;}
+    elif (sel = 101) { f = in; other = 0;}
+    elif (sel = 110) { g = in; other = 0;}
+    elif (sel = 111) { h = in; other = 0;}
+
+*/
+
+CHIP DMux8Way {
+    IN in, sel[3];
+    OUT a, b, c, d, e, f, g, h;
+    PARTS:
+    // DMux(in = in, sel = sel[0], a = tmp1, b = tmp2);
+    // DMux(in = tmp1, sel = sel[1], a = t1, b = t2);
+    // DMux(in = tmp2, sel = sel[1], a = t3, b = t4);
+    DMux4Way(in = in, sel = sel[0..1], a = t1, b = t3, c = t2, d = t4);
+    DMux(in = t1, sel = sel[2], a = a, b = e);
+    DMux(in = t2, sel = sel[2], a = c, b = g);
+    DMux(in = t3, sel = sel[2], a = b, b = f);
+    DMux(in = t4, sel = sel[2], a = d, b = h);
+}

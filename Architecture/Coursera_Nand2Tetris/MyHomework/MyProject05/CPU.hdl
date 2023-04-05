@@ -1,0 +1,73 @@
+// Rsx
+
+CHIP CPU {
+    IN  inM[16],             // 输入值M (M = RAM[A])
+        instruction[16],     // 用于执行的指令
+        reset;               // 是否重置
+    OUT outM[16],            // 输出值M
+        writeM,              // 写入M?
+        addressM[15],        // M在数据内存中的位置
+        pc[15];              // 下一条指令的地址
+    PARTS:
+
+    // instruction[15]  -> A-instr | C=instr
+    // instruction[14]  -> 1
+    // instruction[13]  -> 1
+    // instruction[12]  -> a 决定 ALU的Y输入 0->A 1->M
+    // instruction[11]  -> c1 = ALU.zx
+    // instruction[10]  -> c2 = ALU.nx
+    // instruction[09]  -> c3 = ALU.zy
+    // instruction[08]  -> c4 = ALU.ny
+    // instruction[07]  -> c5 = ALU.f
+    // instruction[06]  -> c6 = ALU.no
+    // instruction[05]  -> d1
+    // instruction[04]  -> d2
+    // instruction[03]  -> d3
+    // instruction[02]  -> j1
+    // instruction[01]  -> j2
+    // instruction[00]  -> j3
+
+    // 区分当前指令类别 是 A-instr 还是 C-Instr
+    DMux(in = true, sel = instruction[15], a = instrTypeA, b = instrTypeC);
+
+
+    // 通过指令最高位 0->将A设置为指令中的常数值 1->待定 以ALU的输出作为待选
+    Mux16(a = instruction, b = outMstate, sel = instrTypeC, out = regAin);
+
+    // C指令且d1位为1 Or A指令 都需要重置A寄存器
+    And(a = instrTypeC, b = instruction[5], out = d1);
+    Or(a = instrTypeA, b = d1, out = regALoad);
+    // C指令且d2位为1 需要重置D寄存器
+    And(a = instrTypeC, b = instruction[4], out = d2);
+
+    ARegister(in = regAin, load = regALoad, out = regAOut, out[0..14] = addressM); // A寄存器
+
+    DRegister(in = outMstate, load = d2, out = regDout); // D寄存器
+
+    // 根据a-域判断 ALU Y的输入 是 A寄存器 还是 来自内存
+    Mux16(a = regAOut, b = inM, sel = instruction[12], out = aluYin);
+
+    ALU(x = regDout, y = aluYin, zx = instruction[11], nx = instruction[10], zy = instruction[9], ny = instruction[8], f = instruction[7], no = instruction[6], out = outM, out = outMstate, zr = equalZero, ng = lessZero);
+
+
+    // PC Part
+    And(a=instruction[15] ,b=instruction[2] ,out=j1 );
+    And(a=instruction[15] ,b=instruction[1] ,out=j2 );
+    And(a=instruction[15] ,b=instruction[0] ,out=j3 );
+
+    Or(a = equalZero, b = lessZero, out = largeZeroTmp);
+    Not(in = largeZeroTmp, out = largeZero);
+
+    And(a = equalZero, b = j2, out = equalOk);
+    And(a = lessZero, b = j1, out = lessOk);
+    And(a = largeZero, b = j3, out = largeOk);
+
+    Or(a = equalOk, b = lessOk, out = jumpTmp);
+    Or(a = largeOk, b = jumpTmp, out = jump);
+    Not(in = jump, out = inc);
+
+
+    PC(in = regAOut, load = jump, inc = inc, reset = reset, out[0..14] = pc); // PC寄存器
+
+    And(a=instruction[15] ,b=instruction[3] ,out=writeM);
+}
