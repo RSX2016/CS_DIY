@@ -22,6 +22,7 @@ public:
 	JackTokenizer(std::string filename);
 	bool hasMoreTokens();
 	bool advance(Token& token);
+	bool lookAhead(Token& token);
 
 private:
 	void getNewLine();

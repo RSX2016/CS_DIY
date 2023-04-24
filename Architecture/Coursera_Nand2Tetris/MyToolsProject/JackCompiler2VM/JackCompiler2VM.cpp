@@ -8,21 +8,31 @@
 #include "Token.h"
 #include "JackTokenizer.h"
 #include "TokenXMLWriter.h"
+#include "CompilationEngine.h"
 
 void GetAllFiles(std::string path, std::vector<std::string>& files);
+void flexmain();
 
 
 int main(int argc, char* argv[])
 {
-    std::string dir = "D:\\MyWorkspace\\CS_DIY_GIT\\CS_DIY\\Architecture\\Coursera_Nand2Tetris\\MyHomework\\MyProject10\\ArrayTest\\";
-    std::vector<std::string> file_arr;
-    file_arr.push_back("Test.jack");
 
+    //std::cout << "call flexmain() A" << std::endl;
+    //flexmain();
+    //std::cout << "call flexmain() B" << std::endl;
+
+    //return 0;
+
+    std::string dir = "D:\\MyWorkspace\\CS_DIY_GIT\\CS_DIY\\Architecture\\Coursera_Nand2Tetris\\MyHomework\\MyProject11\\ComplexArrays\\";
+    std::vector<std::string> file_arr;
+    file_arr.push_back("Main.jack");
+    //file_arr.push_back("SquareGame.jack");
+    //file_arr.push_back("Square.jack");
     if (argc > 1) {
         std::string arg_filenameOrPath = argv[1];
         file_arr.clear();
 
-        if (arg_filenameOrPath.find(".hack") != -1) {
+        if (arg_filenameOrPath.find(".jack") != -1) {
             std::cout << "input is a file" << std::endl;
             int pos = arg_filenameOrPath.find_last_of("\\");
             file_arr.push_back(arg_filenameOrPath.substr(pos + 1, arg_filenameOrPath.length()));
@@ -34,48 +44,29 @@ int main(int argc, char* argv[])
             std::vector<std::string> allFiles;
             GetAllFiles(arg_filenameOrPath, allFiles);
             for (int i = 0; i < allFiles.size(); ++i) {
-                if (allFiles[i].find(".hack") != -1) {
+                if (allFiles[i].find(".jack") != -1) {
                     file_arr.push_back(allFiles[i]);
                 }
             }
+
+            std::cout << "file_arr.size() == " << file_arr.size() << std::endl;
         }
     }
 
-    std::cout << "dir = " << dir << std::endl;
-    std::cout << "file = " << file_arr[0] << std::endl;
 
-    JackTokenizer jackTolenize(dir + file_arr[0]);
-    TokenXMLWriter tokenXmlWriter(dir + file_arr[0] + "_out.xml");
+    for (int i = 0; i < file_arr.size(); ++i) {
+        std::cout << "dir = " << dir << std::endl;
+        std::cout << "file = " << file_arr[i] << std::endl;
 
-    Token tk;
-    while (jackTolenize.hasMoreTokens()) {
-        if (jackTolenize.advance(tk)) {
-            tokenXmlWriter.codeWrite(tk);
+        JackTokenizer jackTolenize(dir + file_arr[i]);
+        //TokenXMLWriter tokenXmlWriter;
+        //tokenXmlWriter.start(dir + file_arr[0] + "_out.xml", jackTolenize);
 
-            switch (tk.mTokenType)
-            {
-            case Token::eTokenType::eTT_KEYWORD:
-                std::cout << "TOKEN { eTT_KEYWORD val = " << tk.mKeywordType << std::endl;
-                break;
-            case Token::eTokenType::eTT_ID:
-                std::cout << "TOKEN { eTT_ID val = " << tk.mID << std::endl;
-                break;
-            case Token::eTokenType::eTT_INT_CONST:
-                std::cout << "TOKEN { eTT_INT_CONST val = " << tk.mIntVal << std::endl;
-                break;
-            case Token::eTokenType::eTT_STRING_CONST:
-                std::cout << "TOKEN { eTT_STRING_CONST val = " << tk.mStringVal << std::endl;
-                break;
-            case Token::eTokenType::eTT_SYMBOL:
-                std::cout << "TOKEN { eTT_SYMBOL val = " << tk.mSymbol << std::endl;
-                break;
-            default:
-                break;
-            }
-        }
+        CompliationEngine compliationEngine;
+        compliationEngine.start(dir + file_arr[i].substr(0, file_arr[i].length() - 5), jackTolenize);
     }
 
-    tokenXmlWriter.end();
+
 }
 
 // 可在这个函数中再加一个format格式参数，push到vector前判断下文件名后缀，仅保留指定格式

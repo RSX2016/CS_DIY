@@ -34,10 +34,25 @@ public:
 		eK_ELSE,
 		eK_WHILE,
 		eK_RETURN,
+		eK_TRUE,
 		eK_FALSE,
 		eK_NULL,
 		eK_THIS
 	};
+
+public:
+	bool checkSymbol(char s)
+	{
+		if (mTokenType == eTokenType::eTT_SYMBOL && mSymbol == s) return true;
+		return false;
+	}
+
+	bool checkKeyWord(eKeyword kw)
+	{
+		if (mTokenType == eTokenType::eTT_KEYWORD && mKeywordType == kw) return true;
+		return false;
+	}
+
 public:
 	Token();
 	static std::map<std::string, Token::eKeyword> s_eKeywordMap;

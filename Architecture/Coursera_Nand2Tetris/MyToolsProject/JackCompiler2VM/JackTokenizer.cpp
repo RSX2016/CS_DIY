@@ -30,48 +30,48 @@ void JackTokenizer::initAM()
 	keyword.push_back({ "while" });
 	Token* tk = NULL;
 
-	s_AMEndState.resize(1000); // ÏÈÔ¤¶¨ÓÐ1000¸ö×´Ì¬
+	s_AMEndState.resize(1000); // ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½1000ï¿½ï¿½×´Ì¬
 
 	std::vector<int> innerVec;
 	innerVec.resize(256);
 	std::fill_n(innerVec.begin(), 256, -1);
 
 	/*
-	ÏÈ´´½¨
-	1¸öÆðÊ¼×´Ì¬
-	19¸ösymbol×´Ì¬
-	1¸ö Êý×Ö´ý¶¨
-	1¸ö Êý×ÖÈ·¶¨
-	1¸ö ×Ö·û´®³£Á¿´ý¶¨
-	1¸ö ×Ö·û´®³£Á¿È·¶¨
-	1¸ö ±êÊ¶·û´ý¶¨
-	1¸ö ±êÊ¶·ûÈ·¶¨
+	ï¿½È´ï¿½ï¿½ï¿½
+	1ï¿½ï¿½ï¿½ï¿½Ê¼×´Ì¬
+	19ï¿½ï¿½symbol×´Ì¬
+	1ï¿½ï¿½ ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½
+	1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½
+	1ï¿½ï¿½ ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	1ï¿½ï¿½ ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½
+	1ï¿½ï¿½ ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	1ï¿½ï¿½ ï¿½ï¿½Ê¶ï¿½ï¿½È·ï¿½ï¿½
 	*/
 	for (int i = 0; i < 26; ++i) {
 		s_analysisAM.push_back(innerVec);
 	}
 
-	// ´´½¨19¸ösymbolµÄ×îÖÕ×´Ì¬
+	// ï¿½ï¿½ï¿½ï¿½19ï¿½ï¿½symbolï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
 	for (int i = 0; i < symbol.size(); ++i) {
 		tk = new Token();
 		tk->mTokenType = Token::eTokenType::eTT_SYMBOL;
 		tk->mSymbol = symbol[i];
 		s_AMEndState[i + 1] = tk;
 	}
-	// ´´½¨Êý×Ö³£Á¿È·¶¨ µÄ×îÖÕ×´Ì¬
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö³ï¿½ï¿½ï¿½È·ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
 	tk = new Token();
 	tk->mTokenType = Token::eTokenType::eTT_INT_CONST;
 	s_AMEndState[21] = tk;
-	// ´´½¨×Ö·û´®³£Á¿È·¶¨ µÄ×îÖÕ×´Ì¬
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
 	tk = new Token();
 	tk->mTokenType = Token::eTokenType::eTT_STRING_CONST;
 	s_AMEndState[23] = tk;
-	// ´´½¨±êÊ¶·ûÈ·¶¨µÄ ×îÖÕ×´Ì¬
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½×´Ì¬
 	tk = new Token();
 	tk->mTokenType = Token::eTokenType::eTT_ID;
 	s_AMEndState[25] = tk;
 
-	// ÆðÊ¼×´Ì¬µÄ×ª»»ÉèÖÃ
+	// ï¿½ï¿½Ê¼×´Ì¬ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for (int i = 0; i < symbol.size(); ++i) { s_analysisAM[0][symbol[i]] = i + 1; }
 	for (int i = '0'; i <= '9'; ++i) { s_analysisAM[0][i] = 20; }
 	for (int i = 'a'; i <= 'z'; ++i) { s_analysisAM[0][i] = 24; }
@@ -81,25 +81,25 @@ void JackTokenizer::initAM()
 	s_analysisAM[0]['\n'] = 0;
 	s_analysisAM[0]['\t'] = 0;
 
-	// Êý×Ö´ý¶¨×´Ì¬µÄ×ª»»ÉèÖÃ
+	// ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for (int i = 0; i < 256; ++i) { s_analysisAM[20][i] = 21; }
 	for (int i = '0'; i <= '9'; ++i) { s_analysisAM[20][i] = 20; }
-	// ×Ö·û´®³£Á¿´ý¶¨µÄ ×ª»»ÉèÖÃ
+	// ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for (int i = 0; i < 256; ++i) { s_analysisAM[22][i] = 22; }
 	s_analysisAM[22]['"'] = 23;
-	// ±êÊ¶·û´ý¶¨×´Ì¬µÄ ×ª»»ÉèÖÃ
+	// ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ ×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for (int i = 0; i < 256; ++i) { s_analysisAM[24][i] = 25; }
 	for (int i = '0'; i <= '9'; ++i) { s_analysisAM[24][i] = 24; }
 	for (int i = 'a'; i <= 'z'; ++i) { s_analysisAM[24][i] = 24; }
 	for (int i = 'A'; i <= 'Z'; ++i) { s_analysisAM[24][i] = 24; }
 	s_analysisAM[24]['_'] = 24;
 
-	// Ò»¸ö¹Ø¼ü×Ö×´Ì¬µÄ Ìø×ªÄ£°å
+	// Ò»ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ ï¿½ï¿½×ªÄ£ï¿½ï¿½
 	std::vector<int> keywordInnerVecTmp = innerVec;
 	for (int i = 0; i < 256; ++i) { keywordInnerVecTmp[i] = 25; }
-	// Óöµ½Êý×Ö Ö±½ÓÌø×ªµ½ ±êÊ¶·û´ý¶¨×´Ì¬
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ö±ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
 	for (int i = '0'; i <= '9'; ++i) { keywordInnerVecTmp[i] = 24; }
-	// Óöµ½×ÖÄ¸»òÏÂ»®Ïß Ä¬ÈÏÏÈÌøµ½ ±êÊ¶·û´ý¶¨×´Ì¬
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½Â»ï¿½ï¿½ï¿½ Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
 	for (int i = 'a'; i <= 'z'; ++i) { keywordInnerVecTmp[i] = 24; }
 	for (int i = 'A'; i <= 'Z'; ++i) { keywordInnerVecTmp[i] = 24; }
 	keywordInnerVecTmp['_'] = 24;
@@ -107,42 +107,42 @@ void JackTokenizer::initAM()
 
 	for (int i = 0; i < keyword.size(); i++)
 	{
-		// ½øÈë ÏàÍ¬Ê××ÖÄ¸µÄ ¹Ø¼ü×ÖÁÐ±í
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
 		int firstIn = 1;
-		// ¼ÇÂ¼Ò»¸öÐÂµÄÊ××ÖÄ¸¶ÔÓ¦µÄ×´Ì¬ºÅ
+		// ï¿½ï¿½Â¼Ò»ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½Ó¦ï¿½ï¿½×´Ì¬ï¿½ï¿½
 		int stateIndex = s_analysisAM.size();
 		for (int j = 0; j < keyword[i].size(); ++j) {
-			// ´¦Àíµ¥¸ö¹Ø¼ü×Ö
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½
 			for (int z = 0; z < keyword[i][j].length(); ++z) {
-				// ´¦Àíµ¥¸ö¹Ø¼ü×ÖµÄÃ¿¸ö×Ö·û
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½Öµï¿½Ã¿ï¿½ï¿½ï¿½Ö·ï¿½
 				if (firstIn == 1) {
-					// ÊÇÒ»¸öÐÂµÄÊ××ÖÄ¸
+					// ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½Ä¸
 					firstIn = 0;
 					s_analysisAM.push_back(keywordInnerVecTmp);
-					// ¸üÐÂ³õÊ¼×´Ì¬ ¶ÔÓ¦´ËÊ××ÖÄ¸µÄ ×´Ì¬×ª»»
+					// ï¿½ï¿½ï¿½Â³ï¿½Ê¼×´Ì¬ ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ ×´Ì¬×ªï¿½ï¿½
 					s_analysisAM[0][keyword[i][0][0]] = stateIndex;
 				}
 				else if (z == 0) {
-					// µÚÒ»¸öÊ××ÖÄ¸ÒÑ¾­´´½¨ÁË ÏàÓ¦µÄ×´Ì¬ºÅ Îª stateIndex
+					// ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ó¦ï¿½ï¿½×´Ì¬ï¿½ï¿½ Îª stateIndex
 					continue;
 				}
 				else if (z == 1) {
 					s_analysisAM.push_back(keywordInnerVecTmp);
-					// ÊÇµÚ¶þ¸ö×Ö·û ÐèÒª¸üÐÂ¸ÃÀàÊ××ÖÄ¸×´Ì¬ ¶ÔÓ¦µ±Ç°×ÖÄ¸µÄ ×´Ì¬×ª»»
+					// ï¿½ÇµÚ¶ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ ï¿½ï¿½Òªï¿½ï¿½ï¿½Â¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸×´Ì¬ ï¿½ï¿½Ó¦ï¿½ï¿½Ç°ï¿½ï¿½Ä¸ï¿½ï¿½ ×´Ì¬×ªï¿½ï¿½
 					s_analysisAM[stateIndex][keyword[i][j][z]] = s_analysisAM.size() - 1;
 				}
 				else {
-					// µÚÈý¸ö»òºóÃæµÄ×Ö·û
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½
 					s_analysisAM.push_back(keywordInnerVecTmp);
-					// ¸üÐÂÇ°Ò»¸ö×´Ì¬ ¶ÔÓ¦µ±Ç°×ÖÄ¸µÄ ×´Ì¬×ª»»
+					// ï¿½ï¿½ï¿½ï¿½Ç°Ò»ï¿½ï¿½×´Ì¬ ï¿½ï¿½Ó¦ï¿½ï¿½Ç°ï¿½ï¿½Ä¸ï¿½ï¿½ ×´Ì¬×ªï¿½ï¿½
 					s_analysisAM[s_analysisAM.size() - 2][keyword[i][j][z]] = s_analysisAM.size() - 1;
 				}
 
 				if (z == keyword[i][j].length() - 1) {
-					// ÊÇµ±Ç°¹Ø¼ü×ÖµÄ×îºóÒ»¸ö×ÖÄ¸
-					// ´´½¨Ò»¸ö¶ÔÓ¦µÄ È·¶¨×´Ì¬
+					// ï¿½Çµï¿½Ç°ï¿½Ø¼ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ä¸
+					// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ È·ï¿½ï¿½×´Ì¬
 					s_analysisAM.push_back(keywordInnerVecTmp);
-					// ¸üÐÂÇ°Ò»¸ö´ý¶¨×´Ì¬ ¶ÔÓ¦µÄ ÖÕ½á·û µÄ×´Ì¬×ª»»
+					// ï¿½ï¿½ï¿½ï¿½Ç°Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ ï¿½ï¿½Ó¦ï¿½ï¿½ ï¿½Õ½ï¿½ï¿½ ï¿½ï¿½×´Ì¬×ªï¿½ï¿½
 					for (int i = 0; i < symbol.size(); ++i) {
 						s_analysisAM[s_analysisAM.size() - 2][symbol[i]] = s_analysisAM.size() - 1;
 					}
@@ -150,7 +150,7 @@ void JackTokenizer::initAM()
 					s_analysisAM[s_analysisAM.size() - 2]['\n'] = s_analysisAM.size() - 1;
 					s_analysisAM[s_analysisAM.size() - 2]['\t'] = s_analysisAM.size() - 1;
 					s_analysisAM[s_analysisAM.size() - 2]['"'] = s_analysisAM.size() - 1;
-					// ²¢ÔÚ ÖÕ½á×´Ì¬ÁÐ±íÖÐ´´½¨Ïà¶ÔÓ¦µÄ Token
+					// ï¿½ï¿½ï¿½ï¿½ ï¿½Õ½ï¿½×´Ì¬ï¿½Ð±ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ Token
 					tk = new Token();
 					tk->mTokenType = Token::eTokenType::eTT_KEYWORD;
 					tk->mKeywordType = Token::s_eKeywordMap[keyword[i][j]];
@@ -163,7 +163,7 @@ void JackTokenizer::initAM()
 
 
 	//std::vector<char> allChar = { '~', '!', '@', '#', '$', '%' };
-	//// ´òÓ¡ ×Ô¶¯×´Ì¬»ú±í
+	//// ï¿½ï¿½Ó¡ ï¿½Ô¶ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½
 	//for (int i = '1'; i <= '~'; i++) {
 	//	printf("%c  ", i);
 	//}
@@ -189,6 +189,15 @@ bool JackTokenizer::hasMoreTokens()
 	return true;
 }
 
+bool JackTokenizer::lookAhead(Token& token)
+{
+	int lineIndex_bk = mLineIndex;
+	bool r = advance(token);
+	mLineIndex = lineIndex_bk;
+
+	return r;
+}
+
 bool JackTokenizer::advance(Token& token)
 {
 	if (!jumpSpace()) { return false; }
@@ -196,9 +205,9 @@ bool JackTokenizer::advance(Token& token)
 	int curState = 0;
 	int isEndState = 0;
 	while (isEndState == 0) {
-		std::cout << "          char = " << mLine[mLineIndex] << "   state from [" << curState << "]";
+		// std::cout << "          char = " << mLine[mLineIndex] << "   state from [" << curState << "]";
 		curState = JackTokenizer::s_analysisAM[curState][mLine[mLineIndex]];
-		std::cout << "to [" << curState << "]";
+		// std::cout << "to [" << curState << "]";
 		if (JackTokenizer::s_AMEndState[curState] != NULL) {
 			isEndState = 1;
 		}
@@ -206,7 +215,7 @@ bool JackTokenizer::advance(Token& token)
 			tmp.append(mLine.substr(mLineIndex, 1));
 			mLineIndex++;
 		}
-		std::cout << "  tmp = " << tmp << std::endl;
+		// std::cout << "  tmp = " << tmp << std::endl;
 	}
 
 	token.mTokenType = JackTokenizer::s_AMEndState[curState]->mTokenType;
@@ -264,7 +273,7 @@ void JackTokenizer::getNewLine()
 		line = buffer;
 		// std::cout << line << " num = " << line.length() << std::endl;
 
-		// ¹ýÂË /**²¿·Ö
+		// ï¿½ï¿½ï¿½ï¿½ /**ï¿½ï¿½ï¿½ï¿½
 		int s = line.find("/*");
 		int e = -1;
 		if (s != -1) {
@@ -297,5 +306,5 @@ void JackTokenizer::getNewLine()
 		}
 	}
 
-	std::cout << "new line = \"" << mLine << "\"" << std::endl;
+	// std::cout << "new line = \"" << mLine << "\"" << std::endl;
 }

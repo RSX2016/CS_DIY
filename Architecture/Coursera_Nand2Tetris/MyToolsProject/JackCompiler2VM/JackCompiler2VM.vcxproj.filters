@@ -24,6 +24,15 @@
     <ClCompile Include="Token.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="FlexFile\lex.yy.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CompilationEngine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolTable.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JackTokenizer.h">
@@ -33,6 +42,12 @@
       <Filter>源文件</Filter>
     </ClInclude>
     <ClInclude Include="TokenXMLWriter.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CompilationEngine.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolTable.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>

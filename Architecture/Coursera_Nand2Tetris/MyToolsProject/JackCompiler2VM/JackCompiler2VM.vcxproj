@@ -139,14 +139,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CompilationEngine.cpp" />
+    <ClCompile Include="FlexFile\lex.yy.cpp" />
     <ClCompile Include="JackCompiler2VM.cpp" />
     <ClCompile Include="JackTokenizer.cpp" />
     <ClCompile Include="Token.cpp" />
+    <ClCompile Include="SymbolTable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CompilationEngine.h" />
     <ClInclude Include="JackTokenizer.h" />
     <ClInclude Include="Token.h" />
     <ClInclude Include="TokenXMLWriter.h" />
+    <ClInclude Include="SymbolTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

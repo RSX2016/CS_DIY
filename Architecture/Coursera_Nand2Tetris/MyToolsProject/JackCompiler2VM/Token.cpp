@@ -24,6 +24,7 @@ Token::Token()
 		Token::s_eKeywordMap["else"] = Token::eKeyword::eK_ELSE;
 		Token::s_eKeywordMap["while"] = Token::eKeyword::eK_WHILE;
 		Token::s_eKeywordMap["return"] = Token::eKeyword::eK_RETURN;
+		Token::s_eKeywordMap["true"] = Token::eKeyword::eK_TRUE;
 		Token::s_eKeywordMap["false"] = Token::eKeyword::eK_FALSE;
 		Token::s_eKeywordMap["null"] = Token::eKeyword::eK_NULL;
 		Token::s_eKeywordMap["this"] = Token::eKeyword::eK_THIS;
@@ -46,6 +47,7 @@ Token::Token()
 		Token::s_eKeywordMapReverse[Token::eKeyword::eK_ELSE] = "else";
 		Token::s_eKeywordMapReverse[Token::eKeyword::eK_WHILE] =  "while";
 		Token::s_eKeywordMapReverse[Token::eKeyword::eK_RETURN] =  "return";
+		Token::s_eKeywordMapReverse[Token::eKeyword::eK_TRUE] = "true";
 		Token::s_eKeywordMapReverse[Token::eKeyword::eK_FALSE] =  "false";
 		Token::s_eKeywordMapReverse[Token::eKeyword::eK_NULL] =  "null";
 		Token::s_eKeywordMapReverse[Token::eKeyword::eK_THIS] =  "this";
