@@ -1,19 +1,16 @@
 #include "types.h"
 #include "riscv.h"
-#include "defs.h"
-#include "date.h"
 #include "param.h"
+#include "defs.h"
 #include "memlayout.h"
 #include "spinlock.h"
 #include "proc.h"
-#include "sysinfo.h"
 
 uint64
 sys_exit(void)
 {
   int n;
-  if(argint(0, &n) < 0)
-    return -1;
+  argint(0, &n);
   exit(n);
   return 0;  // not reached
 }
@@ -34,19 +31,17 @@ uint64
 sys_wait(void)
 {
   uint64 p;
-  if(argaddr(0, &p) < 0)
-    return -1;
+  argaddr(0, &p);
   return wait(p);
 }
 
 uint64
 sys_sbrk(void)
 {
-  int addr;
+  uint64 addr;
   int n;
 
-  if(argint(0, &n) < 0)
-    return -1;
+  argint(0, &n);
   addr = myproc()->sz;
   if(growproc(n) < 0)
     return -1;
@@ -59,12 +54,12 @@ sys_sleep(void)
   int n;
   uint ticks0;
 
-  if(argint(0, &n) < 0)
-    return -1;
+
+  argint(0, &n);
   acquire(&tickslock);
   ticks0 = ticks;
   while(ticks - ticks0 < n){
-    if(myproc()->killed){
+    if(killed(myproc())){
       release(&tickslock);
       return -1;
     }
@@ -74,13 +69,43 @@ sys_sleep(void)
   return 0;
 }
 
+
+#ifdef LAB_PGTBL
+int
+sys_pgaccess(void)
+{
+  // lab pgtbl: your code here.
+  uint64 p;
+  int n;
+  uint64 p_mask;
+  argaddr(0, &p);
+  argint(1, &n);
+  argaddr(2, &p_mask);
+
+  int mask;
+
+  for (int i = 0; i < n; ++i)
+  {
+    pte_t *pte_p = walk(myproc()->pagetable, p + i * PGSIZE, 0);
+    if (*pte_p & PTE_A) {
+      mask |= (1 << i);
+      printf("A [%d] pte = %p \n", i, *pte_p);
+      *pte_p &= ~PTE_A;
+      printf("B pte = %p \n", *pte_p);
+    }
+  }
+
+  copyout(myproc()->pagetable, p_mask, (char *)&mask, 4);
+  return 0;
+}
+#endif
+
 uint64
 sys_kill(void)
 {
   int pid;
 
-  if(argint(0, &pid) < 0)
-    return -1;
+  argint(0, &pid);
   return kill(pid);
 }
 
@@ -95,26 +120,4 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
-}
-
-
-uint64 sys_trace(void)
-{
-  struct proc *p = myproc();
-  p->trace_mask = p->trapframe->a0;
-  printf("sys_trace:: mask = %d \n", p->trace_mask);
-  return 1;
-}
-
-uint64 sys_sysinfo(void)
-{
-  struct proc *p = myproc();
-  struct sysinfo st;
-
-  st.freemem = kfreemem();
-  st.nproc = 10;
-  uint64 addr; // user pointer to struct sysinfo
-  if (argaddr(0, &addr) < 0) { return -1; }
-  if(copyout(p->pagetable, addr, (char *)&st, sizeof(st)) < 0) { return -1; }
-  return 0;
 }

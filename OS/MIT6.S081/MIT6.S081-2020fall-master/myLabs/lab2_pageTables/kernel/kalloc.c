@@ -39,9 +39,9 @@ freerange(void *pa_start, void *pa_end)
     kfree(p);
 }
 
-// Free the page of physical memory pointed at by v,
+// Free the page of physical memory pointed at by pa,
 // which normally should have been returned by a
-// call to kalloc().  (The exception is whenFill with junk to catch dangling refs.
+// call to kalloc().  (The exception is when
 // initializing the allocator; see kinit above.)
 void
 kfree(void *pa)
@@ -79,14 +79,4 @@ kalloc(void)
   if(r)
     memset((char*)r, 5, PGSIZE); // fill with junk
   return (void*)r;
-}
-
-int kfreemem(void)
-{
-  int n = 0;
-  struct run *r;
-  acquire(&kmem.lock);
-  for(r = kmem.freelist; r; r = r->next, n += PGSIZE);
-  release(&kmem.lock);
-  return n;
 }
