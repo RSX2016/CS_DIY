@@ -16,6 +16,33 @@ void sort(long long int v[], int n)
     }
 }
 
+
+
+void sort_asm(long long int v[], int n)
+{
+    int s7 = n-1;
+    int s4 = -1;
+    long long int* s3 = v;
+    long long int* s6 = v;
+    long long int* s2;
+    int s5_i, s1_j;
+    for (s5_i = 0; s5_i != s7; s5_i++, s6++) {
+        s1_j = s5_i;
+        s2 = s6;
+        if (s1_j >= 0) {
+            do {
+                if (*(s2 + 1) < *s2) {
+                    swap(s3, s1_j);
+                    s2 -= 1;
+                    s1_j--;
+                }
+            } while (s1_j != -1)
+        }
+    }
+
+
+}
+
 int
 main(int argc, char *argv[])
 {
